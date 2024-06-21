@@ -15,12 +15,14 @@ spec:
       containers:
         - name: configmapdemo-container
           image: docker.io/library/configmapdemo:0.0.1
-          # brings key:value pairs in as envars from configmap
+          # Bring key:value pairs in as environment variables 
+          # from the config map. Note: all key:value pairs will
+          # become environment variables.
           envFrom:
           - configMapRef:
               name: my-literal-config
-          # Brings key:value pairs in as a properties file from 
-          # configmap (see also: volumes) and mounts the file
+          # Bring key:value pairs in as a properties file from 
+          # config map (see also: volumes) and mounts the file
           # in /etc/config (dir will be created if it doesn't 
           # exist, I think)
           volumeMounts:
