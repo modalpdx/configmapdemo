@@ -22,7 +22,7 @@ spec:
           - configMapRef:
               name: my-literal-config
           # Bring key:value pairs in as a properties file from 
-          # config map (see also: volumes) and mounts the file
+          # config map (see also: volumes) and mount the file
           # in /etc/config (dir will be created if it doesn't 
           # exist, I think)
           volumeMounts:

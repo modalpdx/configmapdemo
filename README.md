@@ -95,11 +95,16 @@ spec:
       containers:
         - name: configmapdemo-container
           image: docker.io/library/configmapdemo:0.0.1
-          # brings key:value pairs in as envars from configmap
+          # Bring key:value pairs in as environment variables 
+          # from the config map. Note: all key:value pairs will
+          # become environment variables.
           envFrom:
           - configMapRef:
               name: my-literal-config
-          # brings key:value pairs in as a properties file from configmap (see also: volumes)
+          # Bring key:value pairs in as a properties file from 
+          # config map (see also: volumes) and mount the file
+          # in /etc/config (dir will be created if it doesn't 
+          # exist, I think)
           volumeMounts:
           - name: configmap-volume
             mountPath: /etc/config
@@ -116,6 +121,13 @@ spec:
         - name: configmap-volume
           configMap: 
             name: my-literal-config
+            items:
+            # Name of data item in the config map.
+            - key: configmapdemo.properties
+            # Name of the mounted file in the container.
+            # If this is not specified, a file will be made 
+            # out of ALL data items in the config map.
+              path: configmapdemo.properties
 ````
 
 Then, apply the deployment.yaml:
@@ -138,7 +150,7 @@ Get the URL:
 
 The URL that is returned is the one that should get you to your running web app.
 
-This last command is where most headaches seem to appear. If you get a "service not found" error, you may need to delete the service and re-create it. Simply deleting and re-applying the deployment will not fix the issue. Example of how to delete a service (use ````kubectl get services```` to get the service name):
+This last command is where most headaches seem to appear. If you get a "service not found" error, you may need to delete the service and re-deploy the app. Simply deleting and re-applying the deployment will not fix the issue. Example of how to delete a service (use ````kubectl get services```` to get the service name):
 
 ````kubectl delete service configmapdemo-deployment````
 
@@ -196,6 +208,12 @@ In Java/Spring, be sure to add a property source annotation in the main applicat
 ````
 
 ### Log into running pod
+
+Get a list of pods:
+
+````kubectl get pods````
+
+Choose the pod to log into and run the following command (replace 'podname' with the actual pod name):
 
 ````kubectl exec podname -it -- /bin/bash````
 
