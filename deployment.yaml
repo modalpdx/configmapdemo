@@ -19,7 +19,10 @@ spec:
           envFrom:
           - configMapRef:
               name: my-literal-config
-          # brings key:value pairs in as a properties file from configmap (see also: volumes)
+          # Brings key:value pairs in as a properties file from 
+          # configmap (see also: volumes) and mounts the file
+          # in /etc/config (dir will be created if it doesn't 
+          # exist, I think)
           volumeMounts:
           - name: configmap-volume
             mountPath: /etc/config
@@ -37,7 +40,9 @@ spec:
           configMap: 
             name: my-literal-config
             items:
-            # name of data item in the config map
+            # Name of data item in the config map.
             - key: configmapdemo.properties
-            # name of the mounted file in the container
+            # Name of the mounted file in the container.
+            # If this is not specified, a file will be made 
+            # out of ALL data items in the config map.
               path: configmapdemo.properties

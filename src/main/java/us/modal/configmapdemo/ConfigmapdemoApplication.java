@@ -6,8 +6,8 @@ import org.springframework.context.annotation.PropertySource;
 
 
 // The PropertySource annotation needs to make configmapdemo.properties optional for
-// local development/testing and to cover situations where mounting the file to 
-// /etc/config failed during deployment.
+// local development/testing (read: not running in a container in a Kubernetes cluster)
+// and to cover situations where mounting the file to /etc/config failed during deployment.
 //
 // ALTERNATIVE: in application.properties, add this file to a spring.config.import property:
 //
