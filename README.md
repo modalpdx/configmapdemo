@@ -95,19 +95,6 @@ spec:
       containers:
         - name: configmapdemo-container
           image: docker.io/library/configmapdemo:0.0.1
-          # Bring key:value pairs in as environment variables 
-          # from the config map. Note: all key:value pairs will
-          # become environment variables.
-          envFrom:
-          - configMapRef:
-              name: my-literal-config
-          # Bring key:value pairs in as a properties file from 
-          # config map (see also: volumes) and mount the file
-          # in /etc/config (dir will be created if it doesn't 
-          # exist, I think)
-          volumeMounts:
-          - name: configmap-volume
-            mountPath: /etc/config
           ports:
           - containerPort: 8080
           resources:
@@ -117,24 +104,13 @@ spec:
             requests:
               cpu: "0.5"
               memory: "256Mi"
-      volumes:
-        - name: configmap-volume
-          configMap: 
-            name: my-literal-config
-            items:
-            # Name of data item in the config map.
-            - key: configmapdemo.properties
-            # Name of the mounted file in the container.
-            # If this is not specified, a file will be made 
-            # out of ALL data items in the config map.
-              path: configmapdemo.properties
 ````
 
 Then, apply the deployment.yaml:
 
 ````kubectl apply -f deployment.yaml````
 
-This will create a deployment with a single pod. The deployment will use the image you built in the previous step. Note: during testing, this somehow made a flimsy deployment that would not run. I had to delete the deployment and re-create it to get it to work. That should not be the case. There needs to be a way to deploy with deployment.yaml, not the command line below, in order to control bringing in configmap data.
+This will create a deployment with a single pod. The deployment will use the image you built earlier. Note: during testing, this somehow made a flimsy deployment that would not run. I had to delete the deployment and re-create it to get it to work. That should not be the case. There needs to be a way to deploy with deployment.yaml, not the command line below, in order to control bringing in configmap data.
 
 Alternate method of deploying, sans deployment.yaml (the image name above goes in this command line):
 
