@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: configmapdemo-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: configmapdemo
+  template:
+    metadata:
+      labels:
+        app: configmapdemo
+    spec:
+      containers:
+        - name: configmapdemo-container
+          image: docker.io/library/configmapdemo:0.0.1
+          # brings key:value pairs in as envars from configmap
+          envFrom:
+          - configMapRef:
+              name: my-literal-config
+          # brings key:value pairs in as a properties file from configmap (see also: volumes)
+          volumeMounts:
+          - name: configmap-volume
+            mountPath: /etc/config
+          ports:
+          - containerPort: 8080
+          resources:
+            limits:
+              cpu: "1"
+              memory: "512Mi"
+            requests:
+              cpu: "0.5"
+              memory: "256Mi"
+      volumes:
+        - name: configmap-volume
+          configMap: 
+            name: my-literal-config
+            items:
+            # name of data item in the config map
+            - key: configmapdemo.properties
+            # name of the mounted file in the container
+              path: configmapdemo.properties
