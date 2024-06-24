@@ -184,6 +184,12 @@ In Java/Spring, be sure to add a property source annotation in the main applicat
 ````
 The ignoreResourceNotFound flag is necessary to enable local developer testing (the file won't exist unless the app is running in a container in Kubernetes) and to allow the app to run if the file is not created/mounted correctly for whatever reason.
 
+The environment variable that was also brought in via config map can be read into an application properties file like so:
+
+````
+demo.environment.string=${DEMO_ENVIRONMENT_STRING:NOPE}
+````
+
 ### Log into running pod
 
 Get a list of pods:
