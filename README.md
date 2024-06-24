@@ -180,8 +180,9 @@ Note the volumeMounts and volumes sections for the file item and the envFrom sec
 In Java/Spring, be sure to add a property source annotation in the main application class that reads in the file from the ConfigMap:
 
 ````
-@PropertySource("classpath:configmapdemo.properties")
+@PropertySource(value="file:/etc/config/configmapdemo.properties", ignoreResourceNotFound = true)
 ````
+The ignoreResourceNotFound flag is necessary to enable local developer testing (the file won't exist unless the app is running in a container in Kubernetes) and to allow the app to run if the file is not created/mounted correctly for whatever reason.
 
 ### Log into running pod
 
