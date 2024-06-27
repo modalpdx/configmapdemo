@@ -18,6 +18,10 @@ spec:
           # Bring key:value pairs in as environment variables 
           # from the config map. Note: all key:value pairs will
           # become environment variables.
+          # You can bring in secrets as well via secretRef. The
+          # secret must be in the same namespace. If there is a 
+          # conflict between a secret and a config map, the order
+          # below will determine which is used.
           envFrom:
           - configMapRef:
               name: my-literal-config
